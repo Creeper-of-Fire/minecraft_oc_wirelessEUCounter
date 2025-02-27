@@ -176,11 +176,19 @@ end
 -- 更新监控数据
 function EU_Monitor.update()
     local currentEU = getWirelessEU()
+
+    -- 让出控制
+    os.sleep(0)
+
     -- 每秒钟存一个值
     table.insert(EU_Monitor.secondEU, 1, currentEU)
     if #EU_Monitor.secondEU > SECOND_DATA_SIZE then 
         table.remove(EU_Monitor.secondEU) 
     end
+
+    -- 让出控制
+    os.sleep(0)
+
     -- 每分钟存一个值
     EU_Monitor.secondCounter = EU_Monitor.secondCounter + 1
     if EU_Monitor.secondCounter >= 60 then
@@ -208,6 +216,9 @@ function EU_Monitor.update()
     if fiveSecAvg >= maxVoltageValue * (4 ^ (GT_SHOW_LOWER + 1)) then
         sciGTInfoOn = true
     end
+
+    -- 让出控制
+    os.sleep(0)
 
     -- 生成输出结果
     term.clear() -- 清除屏幕重新渲染

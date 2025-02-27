@@ -6,6 +6,8 @@ local gtm = component.gt_machine
 local term = require("term")
 local gpu = component.gpu
 local colors = require("colors")
+local event = require("event")
+local thread = require("thread")
 
 
 local function getWirelessEU()
@@ -233,9 +235,16 @@ gpu.setViewport(x, y)
 term.clear()
 term.setCursorBlink(false)
 
--- 每秒运行一次
-while true do
-    EU_Monitor.update()
-    os.sleep(1)
+function main() -- 主线程，负责显示部分
+	-- 每秒运行一次
+    while true do
+        EU_Monitor.update()
+        os.sleep(1)
+    end
 end
--- EU_Monitor.update()
+ 
+function checkTheard() -- 伴随线程，负责ctrl+c的中断处理
+	event.pull("interrupted")
+end
+ 
+thread.waitForAny({thread.create(main), thread.create(checkTheard)})

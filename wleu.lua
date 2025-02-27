@@ -1,4 +1,3 @@
--- 普通版本，不带有科学计数法
 local component = require("component")
 local gtm = component.gt_machine
 local term = require("term")
@@ -138,10 +137,11 @@ function EU_Monitor.update()
     local minuteAvg = calculateAverage(EU_Monitor.secondEU, 60)/20
     local fiveMinAvg = calculateAverage(EU_Monitor.secondEU, 300)/20
     local hourAvg = calculateAverage(EU_Monitor.secondEU, 3600)/20
-    if #EU_Monitor.minuteAvg < 60 then
-        local dayAvg = hourAvg
+    local dayAvg
+    if #EU_Monitor.minuteEU < 60 then
+        dayAvg = hourAvg
     else
-        local dayAvg = calculateAverage(EU_Monitor.minuteAvg, 1440)/60/20
+        dayAvg = calculateAverage(EU_Monitor.minuteEU, 1440)/60/20
     end
 
     -- 生成输出结果

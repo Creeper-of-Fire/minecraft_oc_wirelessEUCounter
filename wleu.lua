@@ -117,11 +117,15 @@ end
 -- 更新监控数据
 function EU_Monitor.update()
     local currentEU = getWirelessEU()
+	-- 让出控制
+    os.sleep(0)
     -- 每秒钟存一个值
     table.insert(EU_Monitor.secondEU, 1, currentEU)
     if #EU_Monitor.secondEU > SECOND_DATA_SIZE then 
         table.remove(EU_Monitor.secondEU) 
     end
+	-- 让出控制
+    os.sleep(0)
     -- 每分钟存一个值
     EU_Monitor.secondCounter = EU_Monitor.secondCounter + 1
     if EU_Monitor.secondCounter >= 60 then
@@ -131,6 +135,8 @@ function EU_Monitor.update()
         end
         EU_Monitor.secondCounter = 0
     end    
+	-- 让出控制
+    os.sleep(0)
 
     -- 准备输出数据
     local currentEU = currentEU
@@ -144,7 +150,10 @@ function EU_Monitor.update()
     else
         dayAvg = calculateAverage(EU_Monitor.minuteEU, 1440)/60/20
     end
-
+	
+-- 让出控制
+    os.sleep(0)
+	
     -- 生成输出结果
     term.clear() -- 清除屏幕重新渲染
     
